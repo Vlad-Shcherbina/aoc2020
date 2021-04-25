@@ -6,6 +6,7 @@ executable aoc2020
     main-is:          Main.hs
 
     other-modules:
+        Day01
         Day02
 
     default-extensions:
