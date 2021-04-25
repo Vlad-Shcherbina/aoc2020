@@ -9,7 +9,18 @@ day02 = do
     fin <- openFile "data/02.txt" ReadMode
     c <- hGetContents fin
     let pls = map parse $ T.lines $ T.pack c
-    putStrLn $ show $ length [() | pl <- pls, isValid pl]
+
+    putStrLn $ show $ length $ filter isValid pls
+    putStrLn $ show $ length $ filter isValid2 pls
+
+isValid (ParsedLine { min_cnt, max_cnt, ch, pwd }) = let
+    cnt = T.count (T.singleton ch) pwd
+    in
+        min_cnt <= cnt && cnt <= max_cnt
+
+isValid2 (ParsedLine { min_cnt, max_cnt, ch, pwd}) =
+    (T.index pwd (min_cnt - 1) == ch) /=
+    (T.index pwd (max_cnt - 1) == ch)
 
 data ParsedLine = ParsedLine {
     min_cnt :: Int,
@@ -17,11 +28,6 @@ data ParsedLine = ParsedLine {
     ch :: Char,
     pwd :: Text
 } deriving (Show)
-
-isValid (ParsedLine { min_cnt, max_cnt, ch, pwd }) = let
-    cnt = T.count (T.singleton ch) pwd
-    in
-        min_cnt <= cnt && cnt <= max_cnt
 
 parse :: Text -> ParsedLine
 parse line = let
