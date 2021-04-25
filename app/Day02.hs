@@ -1,44 +1,46 @@
 module Day02 (day02) where
 
 import System.IO
-import qualified Data.Text as T
 import Data.Text (Text)
+import qualified Data.Text as T
+import qualified Data.Text.IO as TIO
 
 day02 :: IO ()
 day02 = do
-    fin <- openFile "data/02.txt" ReadMode
-    c <- hGetContents fin
-    let pls = map parse $ T.lines $ T.pack c
+    c <- withFile "data/02.txt" ReadMode TIO.hGetContents
+    let pls = map parse $ T.lines $ c
 
-    putStrLn $ show $ length $ filter isValid pls
-    putStrLn $ show $ length $ filter isValid2 pls
+    print $ length $ filter isValid pls
+    print $ length $ filter isValid2 pls
 
-isValid (ParsedLine { min_cnt, max_cnt, ch, pwd }) = let
+isValid :: ParsedLine -> Bool
+isValid (ParsedLine {..}) = let
     cnt = T.count (T.singleton ch) pwd
     in
-        min_cnt <= cnt && cnt <= max_cnt
+        minCnt <= cnt && cnt <= maxCnt
 
-isValid2 (ParsedLine { min_cnt, max_cnt, ch, pwd}) =
-    (T.index pwd (min_cnt - 1) == ch) /=
-    (T.index pwd (max_cnt - 1) == ch)
+isValid2 :: ParsedLine -> Bool
+isValid2 (ParsedLine {..}) =
+    (T.index pwd (minCnt - 1) == ch) /=
+    (T.index pwd (maxCnt - 1) == ch)
 
-data ParsedLine = ParsedLine {
-    min_cnt :: Int,
-    max_cnt :: Int,
-    ch :: Char,
-    pwd :: Text
-} deriving (Show)
+data ParsedLine = ParsedLine
+    { minCnt :: Int
+    , maxCnt :: Int
+    , ch :: Char
+    , pwd :: Text
+    } deriving (Show)
 
 parse :: Text -> ParsedLine
 parse line = let
     Just (policy, pwd) = partition ": " line
-    Just (range, ch_str) = partition " " policy
-    Just (min_str, max_str) = partition "-" range
-    min_cnt :: Int = read $ T.unpack min_str
-    max_cnt :: Int = read $ T.unpack max_str
-    [ch] = T.unpack ch_str
+    Just (range, chStr) = partition " " policy
+    Just (minStr, maxStr) = partition "-" range
+    minCnt = read $ T.unpack minStr
+    maxCnt = read $ T.unpack maxStr
+    [ch] = T.unpack chStr
     in
-        ParsedLine { min_cnt, max_cnt, ch, pwd }
+        ParsedLine { minCnt, maxCnt, ch, pwd }
 
 -- partition "/" "a/b/c" = Just ("a", "b/c")
 partition :: Text -> Text -> Maybe (Text, Text)
