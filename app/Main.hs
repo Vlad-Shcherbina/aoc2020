@@ -13,6 +13,6 @@ main = do
     case args of
         ["1"] -> day01
         ["2"] -> day02
-        otherwise -> do
+        _ -> do
             putStrLn "Usage: cabal run aoc2020 -- <day>"
             exitWith $ ExitFailure 1

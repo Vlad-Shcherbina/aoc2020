@@ -8,7 +8,7 @@ import qualified Data.Text.IO as TIO
 day02 :: IO ()
 day02 = do
     c <- withFile "data/02.txt" ReadMode TIO.hGetContents
-    let pls = map parse $ T.lines $ c
+    let pls = map parse $ T.lines c
 
     print $ length $ filter isValid pls
     print $ length $ filter isValid2 pls

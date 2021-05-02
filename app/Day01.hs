@@ -8,5 +8,5 @@ day01 = do
     c <- hGetContents fin
     let xs :: [Int] = map read $ lines c
 
-    putStrLn $ show $ head [x * y | x <- xs, y <- xs, x + y == 2020]    
-    putStrLn $ show $ head [x * y * z | x <- xs, y <- xs, z <- xs, x + y + z == 2020]
+    print $ head [x * y | x <- xs, y <- xs, x + y == 2020]    
+    print $ head [x * y * z | x <- xs, y <- xs, z <- xs, x + y + z == 2020]
