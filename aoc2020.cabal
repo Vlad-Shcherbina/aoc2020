@@ -6,9 +6,11 @@ executable aoc2020
     main-is:          Main.hs
 
     other-modules:
+        Util
         Day01
         Day02
         Day03
+        Day04
 
     default-extensions:
         ScopedTypeVariables

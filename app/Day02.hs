@@ -5,6 +5,8 @@ import Data.Text (Text)
 import qualified Data.Text as T
 import qualified Data.Text.IO as TIO
 
+import Util
+
 day02 :: IO ()
 day02 = do
     c <- withFile "data/02.txt" ReadMode TIO.hGetContents
@@ -41,11 +43,3 @@ parse line = let
     [ch] = T.unpack chStr
     in
         ParsedLine { minCnt, maxCnt, ch, pwd }
-
--- partition "/" "a/b/c" = Just ("a", "b/c")
-partition :: Text -> Text -> Maybe (Text, Text)
-partition sep s = case T.breakOnAll sep s of
-    (left, right):_ -> case T.stripPrefix sep right of
-        Just right -> Just (left, right)
-        Nothing -> undefined
-    [] -> Nothing
