@@ -18,6 +18,7 @@ executable aoc2020
         NamedFieldPuns
         RecordWildCards
         BlockArguments
+        ViewPatterns
 
     build-depends:
         base ^>=4.15.0.0,
