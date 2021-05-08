@@ -11,6 +11,7 @@ executable aoc2020
         Day02
         Day03
         Day04
+        Day05
 
     default-extensions:
         ScopedTypeVariables
@@ -19,6 +20,7 @@ executable aoc2020
         RecordWildCards
         BlockArguments
         ViewPatterns
+        MultiWayIf
 
     build-depends:
         base ^>=4.15.0.0,
@@ -29,3 +31,4 @@ executable aoc2020
 
     ghc-options:
         -fwarn-incomplete-patterns
+        -fno-ignore-asserts
