@@ -13,6 +13,7 @@ executable aoc2020
         Day04
         Day05
         Day06
+        Day07
 
     default-extensions:
         ScopedTypeVariables
