@@ -21,6 +21,8 @@ day07 = withFile "data/07.txt" ReadMode \fin -> do
 
     putStr "part 1: "
     print $ Set.size $ reachable parents "shiny gold"
+    putStr "part 2: "
+    print $ numBagsInside (Map.fromList rules) "shiny gold"
 
 reachable :: (Ord a, Show a) => Map a [a] -> a -> Set a
 reachable graph start = loop (graph Map.! start) Set.empty
@@ -32,6 +34,10 @@ reachable graph start = loop (graph Map.! start) Set.empty
                 next = fromMaybe [] $ Map.lookup x graph
                 visited' = Set.insert x visited
                 in loop (next ++ xs) visited'
+
+numBagsInside :: Map Text [(Int, Text)] -> Text -> Int
+numBagsInside rules bag =
+    sum [cnt * (1 + numBagsInside rules b) | (cnt, b) <- rules Map.! bag]
 
 collectToMapOfLists :: Ord k => [(k, v)] -> Map k [v]
 collectToMapOfLists kvs = Map.fromListWith (++) [(k, [v]) | (k, v) <- kvs]
