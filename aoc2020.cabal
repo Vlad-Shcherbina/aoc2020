@@ -12,6 +12,7 @@ executable aoc2020
         Day03
         Day04
         Day05
+        Day06
 
     default-extensions:
         ScopedTypeVariables
@@ -24,7 +25,8 @@ executable aoc2020
 
     build-depends:
         base ^>=4.15.0.0,
-        text
+        text,
+        containers
 
     hs-source-dirs:   app
     default-language: Haskell2010
