@@ -1,6 +1,7 @@
 module Day06 (day06) where
 
 import System.IO
+import Data.List (foldl1')
 import qualified Data.Set as Set
 import qualified Data.Text as T
 import qualified Data.Text.IO as TIO
@@ -8,11 +9,16 @@ import qualified Data.Text.IO as TIO
 day06 :: IO ()
 day06 = withFile "data/06.txt" ReadMode \fin -> do
     c <- TIO.hGetContents fin
-    let groups = splitWhen T.null $ T.lines c
-    let group = head groups
-    let count group = Set.size $ Set.fromList $ concat $ map T.unpack group
+    let rawGroups = splitWhen T.null $ T.lines c
+    let rawToGroup raw = map (Set.fromList . T.unpack) raw
+    let groups = map rawToGroup rawGroups
+
     putStr "part 1: "
-    print $ sum $ map count groups
+    print $ sum $ map (Set.size . Set.unions) groups
+    
+    putStr "part 2: "
+    let intersections = foldl1' Set.intersection
+    print $ sum $ map (Set.size . intersections) groups
 
 splitWhen :: (a -> Bool) -> [a] -> [[a]]
 splitWhen p [] = [[]]
