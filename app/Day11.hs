@@ -13,41 +13,30 @@ import qualified Data.Vector as V
 day11 :: IO ()
 day11 = withFile "data/11.txt" ReadMode \fin -> do
     c <- TIO.hGetContents fin
-    let lines = T.lines c
-    let grid = V.fromList $ map parseRow lines
-    let grids = iterate step grid
-    let (stableGrid, _) = head $ filter (uncurry (==)) $ zip grids (tail grids)
-
-    let part1 = concatMap V.toList (V.toList stableGrid) & filter (== TakenSeat) & length
+    let grid = V.fromList $ map parseRow $ T.lines c
     putStr "part 1: "
-    print part1
-
-    let grids2 = iterate step2 grid
-    let (stableGrid2, _) = head $ filter (uncurry (==)) $ zip grids2 (tail grids2)
-
-    let part2 = concatMap V.toList (V.toList stableGrid2) & filter (== TakenSeat) & length
+    print $ solve (neighbors, 4) grid
     putStr "part 2: "
-    print part2
+    print $ solve (losNeighbors, 5) grid
 
-step :: Grid -> Grid
-step g = V.imap (V.imap . f) g
+type Neighbors = Grid -> Int -> Int -> [Cell]
+type Rules = (Neighbors, Int)
+
+solve :: Rules -> Grid -> Int
+solve rules grid = let
+    grids = iterate (step rules) grid
+    (stableGrid, _) = head $ filter (uncurry (==)) $ zip grids (tail grids)
+    in
+    concatMap V.toList (V.toList stableGrid) & filter (== TakenSeat) & length
+
+step :: Rules -> Grid -> Grid
+step (neighbors, threshold) g = V.imap (V.imap . f) g
     where
         f i j Floor = Floor
         f i j EmptySeat = if TakenSeat `notElem` neighbors g i j
             then TakenSeat
             else EmptySeat
-        f i j TakenSeat = if length (filter (== TakenSeat) (neighbors g i j)) >= 4
-            then EmptySeat
-            else TakenSeat
-
-step2 :: Grid -> Grid
-step2 g = V.imap (V.imap . f) g
-    where
-        f i j Floor = Floor
-        f i j EmptySeat = if TakenSeat `notElem` losNeighbors g i j
-            then TakenSeat
-            else EmptySeat
-        f i j TakenSeat = if length (filter (== TakenSeat) (losNeighbors g i j)) >= 5
+        f i j TakenSeat = if length (filter (== TakenSeat) (neighbors g i j)) >= threshold
             then EmptySeat
             else TakenSeat
 
@@ -57,7 +46,10 @@ neighbors g i j = mapMaybe f offsets
 
 losNeighbors :: Grid -> Int -> Int -> [Cell]
 losNeighbors g i j = mapMaybe f offsets
-    where f (di, dj) = head [c | k <- [1..], let c = gridGet g (i + k * di) (j + k * dj), c /= Just Floor]
+    where f (di, dj) = head [
+            c | k <- [1..],
+                let c = gridGet g (i + k * di) (j + k * dj),
+                c /= Just Floor]
 
 gridGet :: Grid -> Int -> Int -> Maybe Cell
 gridGet g i j = do
