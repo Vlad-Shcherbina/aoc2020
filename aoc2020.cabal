@@ -17,6 +17,7 @@ executable aoc2020
         Day08
         Day09
         Day10
+        Day11
 
     default-extensions:
         ScopedTypeVariables
@@ -30,6 +31,7 @@ executable aoc2020
     build-depends:
         base ^>=4.15.0.0,
         text,
+        vector,
         containers
 
     hs-source-dirs:   app
