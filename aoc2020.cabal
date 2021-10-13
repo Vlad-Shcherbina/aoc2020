@@ -32,7 +32,7 @@ executable aoc2020
         LambdaCase
 
     build-depends:
-        base ^>=4.15.0.0,
+        base,
         text,
         vector,
         containers
