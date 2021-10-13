@@ -16,13 +16,13 @@ day02 = do
     print $ length $ filter isValid2 pls
 
 isValid :: ParsedLine -> Bool
-isValid (ParsedLine {..}) = let
+isValid ParsedLine {..} = let
     cnt = T.count (T.singleton ch) pwd
     in
         minCnt <= cnt && cnt <= maxCnt
 
 isValid2 :: ParsedLine -> Bool
-isValid2 (ParsedLine {..}) =
+isValid2 ParsedLine {..} =
     (T.index pwd (minCnt - 1) == ch) /=
     (T.index pwd (maxCnt - 1) == ch)
 
