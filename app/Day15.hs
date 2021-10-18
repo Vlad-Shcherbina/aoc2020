@@ -17,3 +17,5 @@ day15 = do
         chain = input ++ loop last_seen (last input) (length input - 1)
     putStr "part 1: "
     print $ chain !! (2020 - 1)
+    putStr "part 2: "
+    print $ chain !! (30000000 - 1)
