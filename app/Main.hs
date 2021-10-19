@@ -20,6 +20,7 @@ import Day13 (day13)
 import Day14 (day14)
 import Day15 (day15)
 import Day16 (day16)
+import Day17 (day17)
 
 main :: IO ()
 main = do
@@ -41,6 +42,7 @@ main = do
         ["14"] -> day14
         ["15"] -> day15
         ["16"] -> day16
+        ["17"] -> day17
         _ -> do
             putStrLn "Usage: cabal run aoc2020 -- <day>"
             exitWith $ ExitFailure 1
