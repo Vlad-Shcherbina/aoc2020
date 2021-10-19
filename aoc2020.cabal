@@ -34,6 +34,7 @@ executable aoc2020
         ViewPatterns
         MultiWayIf
         LambdaCase
+        TupleSections
 
     build-depends:
         base,
